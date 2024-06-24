@@ -32,10 +32,10 @@ function Client() {
               <img src={chose1} alt='#' />
             </i>
             <h3>Project Done </h3>
-            <strong>1000+</strong>
-            <a className='read_more' href='#'>
+            <strong>50+</strong>
+            {/* <a className='read_more' href='#'>
               Read More
-            </a>
+            </a> */}
           </div>
         </div>
         <div className='col-lg-5 col-md-4'>
@@ -44,10 +44,10 @@ function Client() {
               <img src={chose2} alt='#' />
             </i>
             <h3>Happy Clients </h3>
-            <strong>900+</strong>
-            <a className='read_more' href='#'>
+            <strong>30+</strong>
+            {/* <a className='read_more' href='#'>
               Read More
-            </a>
+            </a> */}
           </div>
         </div>
         <div className='col-lg-2 col-md-4'>
@@ -55,11 +55,11 @@ function Client() {
             <i>
               <img src={chose3} alt='#' />
             </i>
-            <h3>Awards</h3>
-            <strong>100+</strong>
-            <a className='read_more' href='#'>
+            <h3>Customer Satisfaction</h3>
+            <strong>100 %</strong>
+            {/* <a className='read_more' href='#'>
               Read More
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

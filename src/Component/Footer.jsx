@@ -80,23 +80,17 @@ function Footer() {
                   <div className='Informa'>
                     <h3>News</h3>
                     <ul>
-                      <li>It is a long established</li>
-                      <li>fact that a reader will</li>
-                      <li>be distracted by the</li>
-                      <li>readable content of a</li>
-                      <li>page when</li>
+                      <li>Subscribed US</li>
+                      <li>Stay Upto Date With our Innovation</li>
                     </ul>
                   </div>
                 </div>
                 <div className='col-md-3 col-sm-6'>
                   <div className='Informa'>
-                    <h3>company</h3>
+                    <h3>Mission</h3>
                     <ul>
-                      <li>It is a long established</li>
-                      <li>fact that a reader will</li>
-                      <li>be distracted by the</li>
-                      <li>readable content of a</li>
-                      <li>page when</li>
+                      <li>Best Quality Work</li>
+                      <li>Innovate the Future</li>
                     </ul>
                   </div>
                 </div>
@@ -106,22 +100,22 @@ function Footer() {
                     <ul>
                       <li>
                         {' '}
-                        <a href='#'>
+                        <a >
                           {' '}
                           <i
                             className='fa fa-map-marker'
                             aria-hidden='true'
                           ></i>{' '}
-                          Location
+                          510 Ambey Velly Arcade Amroli - Uttran Road  Surat,Gujarat, India
                         </a>
                       </li>
-                      <li>
+                      {/* <li>
                         {' '}
                         <a href='#'>
                           <i className='fa fa-phone' aria-hidden='true'></i>{' '}
                           Call +01 1234567890
                         </a>
-                      </li>
+                      </li> */}
                       <li>
                         {' '}
                         <a href='#'>
@@ -130,7 +124,7 @@ function Footer() {
                             className='fa fa-envelope'
                             aria-hidden='true'
                           ></i>{' '}
-                          demo@gmail.com
+                          hr@codevibe.tech
                         </a>
                       </li>
                     </ul>
