@@ -1,4 +1,5 @@
 // import logo from './logo.svg';
+import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Landing from './Component/Landing';
@@ -12,11 +13,12 @@ import HeaderMenu from './Component/Header';
 import Footer from './Component/Footer';
 
 function App() {
+  const [showMenu,setShowMenu] = React.useState(false)
   return (
     <>
       <Router>
         {/* <div> Chirag </div> */}
-        <HeaderMenu />
+        <HeaderMenu showMenu={showMenu} setShowMenu={setShowMenu} />
         <Routes>
           <Route exact path='/' element={<Landing />} />
           <Route path='/about' element={<AboutUS />} />
@@ -25,7 +27,7 @@ function App() {
           <Route path='/portfolio' element={<Portfolio />} />
           <Route path="*" element={<Landing />} />
         </Routes>
-        <Footer />
+        <Footer setShowMenu={setShowMenu} />
       </Router>
     </>
 

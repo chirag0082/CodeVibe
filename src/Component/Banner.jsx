@@ -37,11 +37,9 @@ function BannerSection() {
                               Creative <br/>Work Idea{' '}
                             </h1>
                             <p>
-                              There are many variations of passages of Lorem
-                              Ipsum{' '}
+                              We are dedicated to excellence
                               <br/>
-                                available, but the majority have suffered
-                                alteration{' '}
+                                Innovating the future
                               
                             </p>
                             <a className='read_more' href='#' onClick={handleClickAbout}>

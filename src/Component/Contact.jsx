@@ -89,7 +89,7 @@ const handleChange = (e) => {
                           Deno <img src={icon} alt='#' />
                         </h3>
                         <p>
-                          "Working with CodeVibe Tech Team was a super cool
+                          "Working with CodeVibe Team was a super cool
                           experience and game-changer for our business. Their
                           team's expertise and dedication to understanding our
                           needs resulted in a solution that not only met but

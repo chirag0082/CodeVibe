@@ -194,7 +194,7 @@ button {
 }
 
 .titlepage {
-     padding-bottom: 60px;
+     padding-bottom: 30px;
 }
 
 /* .titlepage::before {
@@ -298,10 +298,10 @@ header
 
 .header {
      width: 100%;
-     background: rgba(39, 43, 44, 0.87);
-     height: 106px;
-     padding: 37px 30px;
-     position: absolute;
+     background: #2e3130;
+     height: 100px;
+     padding: 20px 30px;
+     /* position: absolute; */
      z-index: 999;
      box-shadow: 3px 0 13px rgba(30, 30, 30, 0.90);
 }
@@ -446,7 +446,8 @@ ul.email li i {
 
 .we_do {
      background: #fff;
-     padding: 125px 0 190px 0;
+     padding: 20px 0;
+     /* padding: 125px 0 20px 0; */
 }
 
 .we_do .titlepage::before {
@@ -574,8 +575,9 @@ ul.email li i {
 /** portfolio **/
 
 .portfolio {
-     padding-top: 120px;
-     padding-bottom: 90px;
+     padding: 20px 0;
+     /* padding-top: 120px; */
+     /* padding-bottom: 20px; */
      background: #fff;
 }
 
@@ -739,7 +741,8 @@ ul.email li i {
 
 .contact {
      background: #fefeff;
-     padding: 120px 0 90px 0;
+     /* padding: 120px 0 50px 0; */
+     padding: 30px 0;
 }
 
 .contact .titlepage::before {
@@ -768,7 +771,7 @@ ul.email li i {
      color: #888888;
      font-size: 18px;
      font-weight: normal;
-     padding: 57px 15px 0 15px;
+     padding: 15px 15px 0 15px;
      border-radius: 0;
      height: 150px;
 }
@@ -797,6 +800,7 @@ ul.email li i {
      color: #888888;
      opacity: 1;
 }
+
 
 
 /** end contact section **/

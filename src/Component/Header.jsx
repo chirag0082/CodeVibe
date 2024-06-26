@@ -1,21 +1,26 @@
 import React from 'react'
 import logo from '../Images/logo.png';
 import { useNavigate } from 'react-router-dom';
-function HeaderMenu() {
+function HeaderMenu({showMenu,setShowMenu}) {
   const navigate = useNavigate();
   const handleClickLanding = () => {
+    setShowMenu(false)
     navigate('/');
   };
   const handleClickAbout = () => {
+    setShowMenu(false)
     navigate('/about');
   };
   const handleClickContact = () => {
+    setShowMenu(false)
     navigate('/contact');
   };
   const handleClickServices = () => {
+    setShowMenu(false)
     navigate('/services');
   };
   const handleClickPortfolio = () => {
+    setShowMenu(false)
     navigate('/portfolio');
   };
   return (
@@ -43,11 +48,12 @@ function HeaderMenu() {
               aria-controls='navbarsExample04'
               aria-expanded='false'
               aria-label='Toggle navigation'
+              onClick={()=>{setShowMenu(!showMenu)}}
             >
               <span className='navbar-toggler-icon'></span>
             </button>
             <div
-              className='collapse navbar-collapse'
+              className={!showMenu ? 'collapse navbar-collapse': 'collapse navbar-collapse show'} 
               id='navbarsExample04'
             >
               <ul className='navbar-nav mr-auto'>

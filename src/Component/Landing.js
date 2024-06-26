@@ -25,9 +25,9 @@ import Contact from './Contact';
 import Footer from './Footer';
 
 function Landing() {
-  return (
+    return (
     <>
-      <div className='main-layout'>
+      {/* <div className='main-layout'> */}
         {/* <div className='loader_bg'>
           <div className='loader'>
             <img src='../Images/loading.gif' alt='' />
@@ -1041,7 +1041,7 @@ function Landing() {
               </div>
             </div>
           </div> */}
-        </div>
+        {/* </div> */}
       {/* </div> */}
     </>
   );

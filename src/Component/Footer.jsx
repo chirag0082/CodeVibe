@@ -17,21 +17,26 @@ import HeaderMenu from './Header';
 import BannerSection from './Banner';
 import { useNavigate } from 'react-router-dom';
 
-function Footer() {
+function Footer({setShowMenu}) {
   const navigate = useNavigate();
   const handleClickLanding = () => {
+    setShowMenu(false)
     navigate('/');
   };
   const handleClickAbout = () => {
+    setShowMenu(false)
     navigate('/about');
   };
   const handleClickContact = () => {
+    setShowMenu(false)
     navigate('/contact');
   };
   const handleClickServices = () => {
+    setShowMenu(false)
     navigate('/services');
   };
   const handleClickPortfolio = () => {
+    setShowMenu(false)
     navigate('/portfolio');
   };
   return (
