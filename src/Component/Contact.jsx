@@ -1,13 +1,63 @@
 import React from 'react';
 import clint from '../Images/clint.jpg';
 import icon from '../Images/icon.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import emailjs from 'emailjs-com';
 function Contact() {
-  const [phoneNumber, setPhoneNumber] = React.useState();
+  // const [phoneNumber, setPhoneNumber] = React.useState();
 
+  const [contactUS,setContactUS] = React.useState({name:'',phone:'',email:'',msg:''})
 const handleChange = (e) => {
-  const value = e.target.value.replace(/\D/g, "");
-  setPhoneNumber(value);
+  setContactUS({...contactUS,[e.target.name]:e.target.value});
 };
+
+const validateInput = () => {
+  if (!contactUS.name)
+  {
+    toast.error('please enter your name')
+  }
+  if (!contactUS.phone)
+  {
+    toast.error('please enter phone number')
+  }
+  if (!contactUS.email)
+  {
+    toast.error('please enter email')
+  }
+  if (!contactUS.msg)
+  {
+    toast.error('please enter your message')
+  }
+  if (contactUS.email)
+  {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid =  re.test(String(contactUS.email).toLowerCase());
+    if (!isValid)
+    {
+      toast.error('please enter valid email')
+    }
+  }
+  if (contactUS.phone)
+  {
+    const re = /^\d{10}$/;
+    const isValid =  re.test(String(contactUS.phone).toLowerCase());
+    if (!isValid)
+    {
+      toast.error('please enter valid mobile number')
+    }
+  }
+ 
+  emailjs.send('service_6hy1dgn', 'template_cpmdyab', contactUS, 'HZ8NSoUMoP2PDtE0k')
+  .then((result) => {
+      console.log(result.text);
+      toast.success('Message sent successfully')
+  }, (error) => {
+    debugger
+      console.log(error.text);
+      toast.error('Something went wrong !!!')
+  });
+}
   return (
     <div className='contact'>
       <div className='container'>
@@ -21,9 +71,11 @@ const handleChange = (e) => {
                 <div className='col-md-12'>
                   <input
                     className='contactus'
-                    placeholder='Name'
+                    placeholder='name'
                     type='type'
-                    name=' Name'
+                    name='name'
+                    value={contactUS.name}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className='col-md-12'>
@@ -31,10 +83,10 @@ const handleChange = (e) => {
                     className='contactus'
                     placeholder='Phone Number'
                     type='type'
-                    name='Phone Number'
-                    value={phoneNumber}
+                    name='phone'
                     onChange = {handleChange}
                     maxLength="12"
+                    value={contactUS.phone}
                   />
                 </div>
                 <div className='col-md-12'>
@@ -42,19 +94,26 @@ const handleChange = (e) => {
                     className='contactus'
                     placeholder='Email'
                     type='type'
-                    name='Email'
+                    name='email'
+                    value={contactUS.email}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className='col-md-12'>
                   <textarea
                     className='textarea'
                     placeholder='Message'
+                    value={contactUS.msg}
+                    onChange={handleChange}
+                    name='msg'
                   ></textarea>
                 </div>
                 <div className='col-md-12'>
                   <button className='send_btn' onClick={(e)=>{
                     e.preventDefault()
-                    alert('clicked')}}>Send Now</button>
+                    // alert('clicked')
+                    validateInput();
+                    }}>Send Now</button>
                 </div>
               </div>
             </form>
@@ -166,6 +225,7 @@ const handleChange = (e) => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
