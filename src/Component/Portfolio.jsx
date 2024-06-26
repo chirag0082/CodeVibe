@@ -4,18 +4,6 @@ import prot2 from '../Images/prot2.png';
 import prot3 from '../Images/prot3.png';
 import prot4 from '../Images/prot4.png';
 
-import we1 from '../Images/we1.png';
-import we2 from '../Images/we2.png';
-import we3 from '../Images/we3.png';
-import chose1 from '../Images/chose1.png';
-import chose2 from '../Images/chose2.png';
-import chose3 from '../Images/chose3.png';
-import clint from '../Images/clint.jpg';
-import icon from '../Images/icon.png';
-import logo_footer from '../Images/logo_footer.png';
-import HeaderMenu from './Header';
-import BannerSection from './Banner';
-
 function Portfolio() {
   return (
     <div className='portfolio'>
@@ -33,14 +21,6 @@ function Portfolio() {
               <figure>
                 <img src={prot1} alt='#' />
                 <div className='portfolio_text'>
-                  <div className='li_icon'>
-                    <a href='#'>
-                      <i className='fa fa-search' aria-hidden='true'></i>
-                    </a>
-                    <a href='#'>
-                      <i className='fa fa-link' aria-hidden='true'></i>
-                    </a>
-                  </div>
                   <h3>Web Development</h3>
                   <p>
                     We specialize in creating custom web solutions that drive
@@ -57,14 +37,6 @@ function Portfolio() {
               <figure>
                 <img src={prot2} alt='#' />
                 <div className='portfolio_text'>
-                  <div className='li_icon'>
-                    <a href='#'>
-                      <i className='fa fa-search' aria-hidden='true'></i>
-                    </a>
-                    <a href='#'>
-                      <i className='fa fa-link' aria-hidden='true'></i>
-                    </a>
-                  </div>
                   <h3>Data Analysis</h3>
                   <p>
                     We harness advanced graph databases, visualization
@@ -80,14 +52,6 @@ function Portfolio() {
               <figure>
                 <img src={prot3} alt='#' />
                 <div className='portfolio_text'>
-                  <div className='li_icon'>
-                    <a href='#'>
-                      <i className='fa fa-search' aria-hidden='true'></i>
-                    </a>
-                    <a href='#'>
-                      <i className='fa fa-link' aria-hidden='true'></i>
-                    </a>
-                  </div>
                   <h3>Turning Business into Digital Revolutions</h3>
                   <p>
                     We take the time to understand your unique business
@@ -103,14 +67,6 @@ function Portfolio() {
               <figure>
                 <img src={prot4} alt='#' />
                 <div className='portfolio_text'>
-                  <div className='li_icon'>
-                    <a href='#'>
-                      <i className='fa fa-search' aria-hidden='true'></i>
-                    </a>
-                    <a href='#'>
-                      <i className='fa fa-link' aria-hidden='true'></i>
-                    </a>
-                  </div>
                   <h3>Client Support</h3>
                   <p>
                     Your satisfaction is our priority. We tailor our support
@@ -121,11 +77,6 @@ function Portfolio() {
               </figure>
             </div>
           </div>
-          {/* <div className='col-md-12'>
-            <a className='read_more' href='portfolio.html'>
-              See More
-            </a>
-          </div> */}
         </div>
       </div>
     </div>

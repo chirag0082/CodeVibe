@@ -1,20 +1,7 @@
 import React from 'react';
-import prot1 from '../Images/prot1.png';
-import prot2 from '../Images/prot2.png';
-import prot3 from '../Images/prot3.png';
-import prot4 from '../Images/prot4.png';
-
 import we1 from '../Images/we1.png';
 import we2 from '../Images/we2.png';
 import we3 from '../Images/we3.png';
-import chose1 from '../Images/chose1.png';
-import chose2 from '../Images/chose2.png';
-import chose3 from '../Images/chose3.png';
-import clint from '../Images/clint.jpg';
-import icon from '../Images/icon.png';
-import logo_footer from '../Images/logo_footer.png';
-import HeaderMenu from './Header';
-import BannerSection from './Banner';
 
 function CompanyServices() {
   return (
@@ -57,8 +44,8 @@ function CompanyServices() {
                             <p>
                               We create visually stunning websites that provide
                               an optimal viewing experience across all devices,
-                              from desktops to smartphones <br/>We provide solution of cutting
-                              edge technology
+                              from desktops to smartphones <br />
+                              We provide solution of cutting edge technology
                             </p>
                             {/* <a className='read_more' href='we_do'>
                                   Read More
@@ -78,8 +65,9 @@ function CompanyServices() {
                               We help businesses transition to the cloud
                               seamlessly, ensuring minimal disruption and
                               maximum efficiency.
-                              <br/>
-                              Help Business to used seamlessly and uninterrupted cloud services.  
+                              <br />
+                              Help Business to used seamlessly and uninterrupted
+                              cloud services.
                             </p>
                             {/* <a className='read_more' href='we_do'>
                                   Read More
@@ -99,8 +87,7 @@ function CompanyServices() {
                               We develop custom web and mobile applications
                               tailored to meet your business needs, providing
                               innovative solutions that enhance productivity and
-                              engagement.
-                              Turn your business paperless
+                              engagement. Turn your business paperless
                             </p>
                             {/* <a className='read_more' href='we_do'>
                                   Read More
@@ -248,24 +235,6 @@ function CompanyServices() {
                   </div>
                 </div>
               </div>
-              {/* <a
-                className='carousel-control-prev'
-                href='#we1'
-                role='button'
-                data-slide='prev'
-              >
-                <i className='fa fa-angle-left' aria-hidden='true'></i>
-                <span className='sr-only'>Previous</span>
-              </a>
-              <a
-                className='carousel-control-next'
-                href='#we1'
-                role='button'
-                data-slide='next'
-              >
-                <i className='fa fa-angle-right' aria-hidden='true'></i>
-                <span className='sr-only'>Next</span>
-              </a> */}
             </div>
           </div>
         </div>

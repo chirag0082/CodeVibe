@@ -1,20 +1,5 @@
 import React from 'react';
-import prot1 from '../Images/prot1.png';
-import prot2 from '../Images/prot2.png';
-import prot3 from '../Images/prot3.png';
-import prot4 from '../Images/prot4.png';
-
-import we1 from '../Images/we1.png';
-import we2 from '../Images/we2.png';
-import we3 from '../Images/we3.png';
-import chose1 from '../Images/chose1.png';
-import chose2 from '../Images/chose2.png';
-import chose3 from '../Images/chose3.png';
-import clint from '../Images/clint.jpg';
-import icon from '../Images/icon.png';
 import logo_footer from '../Images/logo_footer.png';
-import HeaderMenu from './Header';
-import BannerSection from './Banner';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -52,8 +37,7 @@ function Footer({ setShowMenu }) {
       } else {
         toast.success('Subscribed successfully');
       }
-    }
-    else {
+    } else {
       toast.error('please enter email');
     }
   };
@@ -62,7 +46,7 @@ function Footer({ setShowMenu }) {
       <div className='container'>
         <div className='row'>
           <div className='col-md-3'>
-            <a className='logo_footer' href='#' onClick={handleClickLanding}>
+            <a className='logo_footer' href='' onClick={handleClickLanding}>
               <img src={logo_footer} alt='#' />
             </a>
           </div>
@@ -88,27 +72,27 @@ function Footer({ setShowMenu }) {
               <h3>Useful Link</h3>
               <ul>
                 <li>
-                  <a href='#' onClick={handleClickLanding}>
+                  <a href='' onClick={handleClickLanding}>
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href='#' onClick={handleClickAbout}>
+                  <a href='' onClick={handleClickAbout}>
                     About
                   </a>
                 </li>
                 <li>
-                  <a href='#' onClick={handleClickServices}>
+                  <a href='' onClick={handleClickServices}>
                     What we do
                   </a>
                 </li>
                 <li>
-                  <a href='#' onClick={handleClickPortfolio}>
+                  <a href='' onClick={handleClickPortfolio}>
                     Portfolio
                   </a>
                 </li>
                 <li>
-                  <a href='#' onClick={handleClickContact}>
+                  <a href='' onClick={handleClickContact}>
                     Contact us
                   </a>
                 </li>
@@ -146,16 +130,10 @@ function Footer({ setShowMenu }) {
                   >
                     {' '}
                     <i className='fa fa-map-marker' aria-hidden='true'></i> 510
-                    Amby Valley Arcade Green Road Uttran  Surat,Gujarat, India
+                    Amby Valley Arcade Green Road Uttran Surat,Gujarat, India
                   </a>
                 </li>
-                {/* <li>
-                        {' '}
-                        <a href='#'>
-                          <i className='fa fa-phone' aria-hidden='true'></i>{' '}
-                          Call +01 1234567890
-                        </a>
-                      </li> */}
+
                 <li>
                   {' '}
                   <a href='mailto:hr@codevibe.tech'>
@@ -173,51 +151,8 @@ function Footer({ setShowMenu }) {
         <div className='container'>
           <div className='row d_flex'>
             <div className='col-md-6'>
-              <p>
-                © 2024 All Rights Reserved.{' '}
-                {/* <a href='https://html.design/'> Free Html Template</a> */}
-              </p>
+              <p>© 2024 All Rights Reserved. </p>
             </div>
-            {/* <div className='col-md-6'>
-                    <ul className='social_icon text_align_center'>
-                      <li>
-                        {' '}
-                        <a href='#'>
-                          <i className='fa fa-facebook-f'></i>
-                        </a>
-                      </li>
-                      <li>
-                        {' '}
-                        <a href='#'>
-                          <i className='fa fa-twitter'></i>
-                        </a>
-                      </li>
-                      <li>
-                        {' '}
-                        <a href='#'>
-                          <i
-                            className='fa fa-linkedin-square'
-                            aria-hidden='true'
-                          ></i>
-                        </a>
-                      </li>
-                      <li>
-                        {' '}
-                        <a href='#'>
-                          <i className='fa fa-instagram' aria-hidden='true'></i>
-                        </a>
-                      </li>
-                      <li>
-                        {' '}
-                        <a href='#'>
-                          <i
-                            className='fa fa-youtube-play'
-                            aria-hidden='true'
-                          ></i>
-                        </a>
-                      </li>
-                    </ul>
-                  </div> */}
           </div>
         </div>
       </div>

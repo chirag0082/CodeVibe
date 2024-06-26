@@ -5,59 +5,70 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import emailjs from 'emailjs-com';
 function Contact() {
-  // const [phoneNumber, setPhoneNumber] = React.useState();
-
-  const [contactUS,setContactUS] = React.useState({name:'',phone:'',email:'',msg:''})
-const handleChange = (e) => {
-  setContactUS({...contactUS,[e.target.name]:e.target.value});
-};
-
-const validateInput = () => {
-  if (!contactUS.name)
-  {
-    toast.error('please enter your name')
-  }
-  if (!contactUS.phone)
-  {
-    toast.error('please enter phone number')
-  }
-  if (!contactUS.email)
-  {
-    toast.error('please enter email')
-  }
-  if (!contactUS.msg)
-  {
-    toast.error('please enter your message')
-  }
-  if (contactUS.email)
-  {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid =  re.test(String(contactUS.email).toLowerCase());
-    if (!isValid)
-    {
-      toast.error('please enter valid email')
-    }
-  }
-  if (contactUS.phone)
-  {
-    const re = /^\d{10}$/;
-    const isValid =  re.test(String(contactUS.phone).toLowerCase());
-    if (!isValid)
-    {
-      toast.error('please enter valid mobile number')
-    }
-  }
- 
-  emailjs.send('service_6hy1dgn', 'template_cpmdyab', contactUS, 'HZ8NSoUMoP2PDtE0k')
-  .then((result) => {
-      console.log(result.text);
-      toast.success('Message sent successfully')
-  }, (error) => {
-    debugger
-      console.log(error.text);
-      toast.error('Something went wrong !!!')
+  const [contactUS, setContactUS] = React.useState({
+    name: '',
+    phone: '',
+    email: '',
+    msg: ''
   });
-}
+  const handleChange = (e) => {
+    setContactUS({ ...contactUS, [e.target.name]: e.target.value });
+  };
+
+  const validateInput = () => {
+    if (!contactUS.name) {
+      toast.error('please enter your name');
+    }
+    if (!contactUS.phone) {
+      toast.error('please enter phone number');
+    }
+    if (!contactUS.email) {
+      toast.error('please enter email');
+    }
+    if (!contactUS.msg) {
+      toast.error('please enter your message');
+    }
+    if (contactUS.email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isValid = re.test(String(contactUS.email).toLowerCase());
+      if (!isValid) {
+        toast.error('please enter valid email');
+      }
+    }
+    if (contactUS.phone) {
+      const re = /^\d{10}$/;
+      const isValid = re.test(String(contactUS.phone).toLowerCase());
+      if (!isValid) {
+        toast.error('please enter valid mobile number');
+      }
+    }
+
+    if (
+      contactUS.name &&
+      contactUS.phone &&
+      contactUS.email &&
+      contactUS.msg &&
+      contactUS.phone
+    ) {
+      emailjs
+        .send(
+          'service_6hy1dgn',
+          'template_cpmdyab',
+          contactUS,
+          'HZ8NSoUMoP2PDtE0k'
+        )
+        .then(
+          (result) => {
+            console.log(result.text);
+            toast.success('Message sent successfully');
+          },
+          (error) => {
+            console.log(error.text);
+            toast.error('Something went wrong !!!');
+          }
+        );
+    }
+  };
   return (
     <div className='contact'>
       <div className='container'>
@@ -84,8 +95,8 @@ const validateInput = () => {
                     placeholder='Phone Number'
                     type='type'
                     name='phone'
-                    onChange = {handleChange}
-                    maxLength="12"
+                    onChange={handleChange}
+                    maxLength='12'
                     value={contactUS.phone}
                   />
                 </div>
@@ -109,11 +120,16 @@ const validateInput = () => {
                   ></textarea>
                 </div>
                 <div className='col-md-12'>
-                  <button className='send_btn' onClick={(e)=>{
-                    e.preventDefault()
-                    // alert('clicked')
-                    validateInput();
-                    }}>Send Now</button>
+                  <button
+                    className='send_btn'
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // alert('clicked')
+                      validateInput();
+                    }}
+                  >
+                    Send Now
+                  </button>
                 </div>
               </div>
             </form>
@@ -203,24 +219,6 @@ const validateInput = () => {
                   </div>
                 </div>
               </div>
-              {/* <a
-                className='carousel-control-prev'
-                href='#clientsl'
-                role='button'
-                data-slide='prev'
-              >
-                <i className='fa fa-angle-left' aria-hidden='true'></i>
-                <span className='sr-only'>Previous</span>
-              </a>
-              <a
-                className='carousel-control-next'
-                href='#clientsl'
-                role='button'
-                data-slide='next'
-              >
-                <i className='fa fa-angle-right' aria-hidden='true'></i>
-                <span className='sr-only'>Next</span>
-              </a> */}
             </div>
           </div>
         </div>
