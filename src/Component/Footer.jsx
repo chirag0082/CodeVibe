@@ -146,7 +146,7 @@ function Footer({ setShowMenu }) {
                   >
                     {' '}
                     <i className='fa fa-map-marker' aria-hidden='true'></i> 510
-                    Ambey Velly Arcade Amroli - Uttran Road Surat,Gujarat, India
+                    Amby Valley Arcade Green Road Uttran - Surat,Gujarat, India
                   </a>
                 </li>
                 {/* <li>
