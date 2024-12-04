@@ -1,0 +1,127 @@
+.footer {
+  background-color: #121212;
+  color: #ffffff;
+  padding: 4rem 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoSection {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  max-width: 150px;
+  height: auto;
+}
+
+.subscribeSection {
+  margin-bottom: 2rem;
+}
+
+.newsletterForm {
+  display: flex;
+  max-width: 500px;
+}
+
+.emailInput {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #333;
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.subscribeBtn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.subscribeBtn:hover {
+  background-color: #0056b3;
+}
+
+.linksContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.linkColumn,
+.contactColumn {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.linkColumn h3,
+.contactColumn h3 {
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  margin-bottom: 1rem;
+}
+
+.linkColumn ul,
+.contactColumn ul {
+  list-style: none;
+  padding: 0;
+}
+
+.linkColumn li,
+.contactColumn li {
+  margin-bottom: 0.5rem;
+}
+
+.linkColumn a,
+.contactColumn a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.linkColumn a:hover,
+.contactColumn a:hover {
+  color: #007bff;
+}
+
+.copyright {
+  margin-top: 2rem;
+  text-align: center;
+  border-top: 1px solid #333;
+  padding-top: 1rem;
+  color: #888;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .linksContainer {
+    flex-direction: column;
+  }
+
+  .linkColumn,
+  .contactColumn {
+    margin-bottom: 1rem;
+  }
+
+  .newsletterForm {
+    flex-direction: column;
+  }
+
+  .emailInput,
+  .subscribeBtn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
