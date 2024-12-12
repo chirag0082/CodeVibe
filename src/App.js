@@ -1,35 +1,108 @@
-import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Landing from "./Component/Landing";
-import AboutUS from "./Component/AboutUS";
-import CompanyServices from "./Component/CompanyServices";
-import Portfolio from "./Component/Portfolio";
-import Contact from "./Component/Contact";
-import Career from "./Component/Career";
-import "./css/style.css";
+import React from "react";
+import { useSelector } from "react-redux";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+
+import AdminHeader from "./component/admin/layout/AdminHeader";
+import AboutUS from "./pages/AboutUS";
+import AdminLogin from "./pages/AdminLogin";
+import Career from "./pages/Career";
+import CompanyServices from "./pages/CompanyServices";
+import Contact from "./pages/Contact";
+import Footer from "./pages/Footer";
+import HeaderMenu from "./pages/Header";
+import Landing from "./pages/Landing";
+import Portfolio from "./pages/Portfolio";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import EmpLeaveApprove from "./pages/admin/EmpLeaveApprove";
+import EmpSalary from "./pages/admin/EmpSalary";
+
 import "./css/responsive.css";
-import HeaderMenu from "./Component/Header";
-import Footer from "./Component/Footer";
+import "./css/style.css";
+
+const ProtectedRoute = ({ children, adminOnly = false }) => {
+  const user = useSelector((state) => state.adminSlice);
+  const isAuthenticated = user.userName !== "";
+
+  if (adminOnly && !isAuthenticated) {
+    return <Navigate to="/admin-login" replace />;
+  }
+
+  return children;
+};
 
 function App() {
-  const [showMenu, setShowMenu] = React.useState(false);
+  const user = useSelector((state) => state.adminSlice);
+  const isAuthenticated = user.userName !== "";
+
+  const HeaderComponent = ({ children }) => {
+    const isAdminRoute = window.location.pathname.startsWith("/admin");
+
+    return (
+      <>
+        {isAuthenticated && isAdminRoute ? <AdminHeader /> : <HeaderMenu />}
+        {children}
+        <Footer />
+      </>
+    );
+  };
+
   return (
-    <>
-      <Router>
-        <HeaderMenu showMenu={showMenu} setShowMenu={setShowMenu} />
+    <Router>
+      <HeaderComponent>
         <Routes>
-          <Route exact path="/" element={<Landing />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/about" element={<AboutUS />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<CompanyServices />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/career" element={<Career />} />
-          <Route path="*" element={<Landing />} />
+
+          <Route
+            path="/admin-login"
+            element={
+              <ProtectedRoute adminOnly={false}>
+                <AdminLogin />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/leave-approve"
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <EmpLeaveApprove />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/salary"
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <EmpSalary />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        <Footer setShowMenu={setShowMenu} />
-      </Router>
-    </>
+      </HeaderComponent>
+    </Router>
   );
 }
 

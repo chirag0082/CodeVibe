@@ -1,0 +1,48 @@
+.registrationContainer {
+  background-color: #f0f2f5;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.registrationCard {
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.copyAddressButton {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.submitButton {
+  margin-top: 16px;
+  height: 48px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+.centerCol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .copyAddressButton {
+  width: 80%;
+} */
+
+@media (max-width: 576px) {
+  .registrationContainer {
+    padding: 12px;
+  }
+
+  .registrationCard {
+    max-width: 100%;
+  }
+}
