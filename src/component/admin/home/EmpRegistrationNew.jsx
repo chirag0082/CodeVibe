@@ -155,6 +155,12 @@ const EmployeeRegistration = ({
         onChange={({ file }) => handleFileChange(name, file)}
         accept=".jpg,.jpeg,.png,.pdf"
         disabled={loading}
+        listType="text"
+        showUploadList={{
+          showPreviewIcon: false,
+          showDownloadIcon: false,
+          showRemoveIcon: true,
+        }}
       >
         <Button icon={<UploadOutlined />} className={styles.uploadBtn}>
           Upload {label}
@@ -162,6 +168,7 @@ const EmployeeRegistration = ({
       </Upload>
     </Form.Item>
   );
+
   const handleSubmit = async (values) => {
     setLoading(true);
 
@@ -728,40 +735,92 @@ const EmployeeRegistration = ({
               icon={<DiffOutlined className={styles.sectionIcon} />}
             >
               <Row gutter={24}>
-                <Col xs={24} sm={11}>
-                  <UploadField
-                    label="Emp Photo"
-                    name="empPhoto"
-                    rules={[{ required: true, message: "Required" }]}
-                  />
+                <Col span={12}>
+                  <Form.Item label="Emp Photo" name="empPhoto">
+                    <Upload
+                      name="empPhoto"
+                      fileList={
+                        formData.empPhoto
+                          ? [
+                              {
+                                uid: "-1",
+                                name: formData.empPhoto.name,
+                                status: "done",
+                                originFileObj: formData.empPhoto,
+                              },
+                            ]
+                          : []
+                      }
+                      beforeUpload={() => false}
+                      onChange={({ file, fileList }) =>
+                        handleFileChange("empPhoto", file)
+                      }
+                      accept="image/*"
+                      maxCount={1}
+                    >
+                      <Button icon={<UploadOutlined />}>Upload</Button>
+                    </Upload>
+                  </Form.Item>
                 </Col>
-                <Col xs={24} sm={11}>
-                  <UploadField
-                    label="PAN Photo"
-                    name="panPhoto"
-                    rules={[{ required: true, message: "Required" }]}
-                  />
+                <Col span={12}>
+                  <Form.Item label="PAN Photo" name="panPhoto">
+                    <Upload
+                      name="panPhoto"
+                      beforeUpload={() => false}
+                      onChange={({ file }) =>
+                        handleFileChange("panPhoto", file)
+                      }
+                      accept=".jpg,.jpeg,.png,.pdf"
+                      maxCount={1}
+                    >
+                      <Button icon={<UploadOutlined />}>Upload</Button>
+                    </Upload>
+                  </Form.Item>
                 </Col>
-                <Col xs={24} sm={11}>
-                  <UploadField
-                    label="Aadhar Front"
-                    name="aadharFront"
-                    rules={[{ required: true, message: "Required" }]}
-                  />
+                <Col span={12}>
+                  <Form.Item label="Aadhar Front" name="aadharFront">
+                    <Upload
+                      name="aadharFront"
+                      beforeUpload={() => false}
+                      onChange={({ file }) =>
+                        handleFileChange("aadharFront", file)
+                      }
+                      accept=".jpg,.jpeg,.png,.pdf"
+                      maxCount={1}
+                    >
+                      <Button icon={<UploadOutlined />}>Upload</Button>
+                    </Upload>
+                  </Form.Item>
                 </Col>
-                <Col xs={24} sm={11}>
-                  <UploadField
-                    label="Aadhar Back"
-                    name="aadharBack"
-                    rules={[{ required: true, message: "Required" }]}
-                  />
+                <Col span={12}>
+                  <Form.Item label="Aadhar Back" name="aadharBack">
+                    <Upload
+                      name="aadharBack"
+                      beforeUpload={() => false}
+                      onChange={({ file }) =>
+                        handleFileChange("aadharBack", file)
+                      }
+                      accept=".jpg,.jpeg,.png,.pdf"
+                      maxCount={1}
+                    >
+                      <Button icon={<UploadOutlined />}>Upload</Button>
+                    </Upload>
+                  </Form.Item>
                 </Col>
-                <Col xs={24} sm={11}>
-                  <UploadField
-                    label="Resident Proof"
-                    name="residentProof"
-                    rules={[{ required: true, message: "Required" }]}
-                  />
+                <Col span={12}>
+                  <Form.Item label="Resident Proof" name="residentProof">
+                    <Upload
+                      name="residentProof"
+                      beforeUpload={() => false}
+                      onChange={({ file }) =>
+                        handleFileChange("residentProof", file)
+                      }
+                      accept=".jpg,.jpeg,.png,.pdf"
+                      maxCount={1}
+                    >
+                      <Button icon={<UploadOutlined />}>Upload</Button>
+                    </Upload>
+                  </Form.Item>
                 </Col>
               </Row>
             </FormSection>
