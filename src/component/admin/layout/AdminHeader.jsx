@@ -1,13 +1,23 @@
+import {
+  CheckCircle,
+  IndianRupee,
+  Menu as MenuIcon,
+  Scroll,
+  Users,
+  X,
+} from "lucide-react";
 import React, { useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { X, Menu } from "lucide-react";
-import styles from "../css/HeaderMenu.module.css";
-import logo from "../Images/logo.png";
-import scrollTop from "../utils/scrollTop";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import styles from "../../../css/admin/AdminHeader.module.css";
+import { logout } from "../../../Store/slice/adminSlice";
 
-const HeaderMenu = ({ showMenu, setShowMenu }) => {
-  const navigate = useNavigate();
+const AdminHeader = ({ showMenu, setShowMenu }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const user = useSelector((store) => store.adminSlice);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleResize = () => {
@@ -26,24 +36,51 @@ const HeaderMenu = ({ showMenu, setShowMenu }) => {
   };
 
   const menuItems = [
-    { label: "Home", path: "/", icon: "🏠" },
-    { label: "About", path: "/about", icon: "ℹ️" },
-    { label: "What we do", path: "/services", icon: "💼" },
-    { label: "Portfolio", path: "/portfolio", icon: "📁" },
-    { label: "Contact Us", path: "/contact", icon: "📞" },
-    { label: "Career", path: "/career", icon: "💡" },
+    {
+      label: "Employee",
+      path: "/admin/dashboard",
+      icon: <Users />,
+      iconEmoji: "👤",
+    },
+    {
+      label: "Trainee",
+      path: "/admin/trainee",
+      icon: <Users />,
+      iconEmoji: "👤",
+    },
+    {
+      label: "Leave Approve",
+      path: "/admin/leave-approve",
+      icon: <CheckCircle />,
+      iconEmoji: "✔️",
+    },
+    {
+      label: "Salary",
+      path: "/admin/salary",
+      icon: <IndianRupee />,
+      iconEmoji: "💵",
+    },
+    {
+      label: "Company Ledger",
+      path: "/admin/ledger",
+      icon: <Scroll />,
+      iconEmoji: "📚",
+    },
   ];
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
   return (
     <header className={styles.headerFullWidth}>
       <div className={styles.headerContainer}>
         <div className={styles.logoSection}>
-          <Link to="/">
-            <img src={logo} alt="Company Logo" className={styles.logo} />
+          <Link to="/admin/dashboard">
+            <h1 className={styles.logo}>Admin</h1>
           </Link>
         </div>
 
@@ -52,7 +89,7 @@ const HeaderMenu = ({ showMenu, setShowMenu }) => {
             onClick={toggleMenu}
             className={`${styles.burgerMenuButton} md:hidden`}
           >
-            {showMenu ? <X size={24} /> : <Menu size={24} />}
+            {showMenu ? <X size={24} /> : <MenuIcon size={24} />}
           </button>
 
           <nav className={styles.desktopNavFull}>
@@ -63,25 +100,25 @@ const HeaderMenu = ({ showMenu, setShowMenu }) => {
                 className={`${styles.desktopNavLink} ${
                   location.pathname === item.path ? styles.activeNavLink : ""
                 }`}
-                onClick={scrollTop}
               >
-                {item.label}
+                {item.icon}
+                <span className={styles.navLinkText}>{item.label}</span>
               </Link>
             ))}
+            {user.token && (
+              <button className={styles.logoutButton} onClick={logoutHandler}>
+                Logout
+              </button>
+            )}
           </nav>
 
           {showMenu && (
             <div className={styles.mobileDrawer}>
               <div className={styles.drawerOverlay} onClick={toggleMenu} />
-
               <div className={styles.drawerContent}>
                 <div className={styles.drawerHeader}>
-                  <Link to="/" onClick={toggleMenu}>
-                    <img
-                      src={logo}
-                      alt="Company Logo"
-                      className={styles.drawerLogo}
-                    />
+                  <Link to="/admin/dashboard" onClick={toggleMenu}>
+                    <h1 className={styles.drawerLogo}>Admin</h1>
                   </Link>
                   <button onClick={toggleMenu} className={styles.closeButton}>
                     <X size={24} />
@@ -100,12 +137,22 @@ const HeaderMenu = ({ showMenu, setShowMenu }) => {
                       }`}
                       onClick={() => handleNavigation(item.path)}
                     >
-                      <span className={styles.drawerNavIcon}>{item.icon}</span>
+                      <span className={styles.drawerNavIcon}>
+                        {item.iconEmoji}
+                      </span>
                       <span className={styles.drawerNavLabel}>
                         {item.label}
                       </span>
                     </Link>
                   ))}
+                  {user.token && (
+                    <button
+                      className={styles.drawerLogoutButton}
+                      onClick={logoutHandler}
+                    >
+                      Logout
+                    </button>
+                  )}
                 </nav>
               </div>
             </div>
@@ -116,4 +163,4 @@ const HeaderMenu = ({ showMenu, setShowMenu }) => {
   );
 };
 
-export default HeaderMenu;
+export default AdminHeader;

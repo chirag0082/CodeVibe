@@ -59,11 +59,9 @@ function Contact() {
         )
         .then(
           (result) => {
-            console.log(result.text);
             toast.success('Message sent successfully');
           },
           (error) => {
-            console.log(error.text);
             toast.error('Something went wrong !!!');
           }
         );

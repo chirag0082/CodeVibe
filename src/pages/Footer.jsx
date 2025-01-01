@@ -1,8 +1,7 @@
 import React from "react";
 import logo_footer from "../Images/logo_footer.png";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import scrollTop from "../utils/scrollTop";
 
 function Footer({ setShowMenu }) {
@@ -177,7 +176,6 @@ function Footer({ setShowMenu }) {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 }
