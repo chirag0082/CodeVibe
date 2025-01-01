@@ -1,53 +1,57 @@
+import React, { useState } from "react";
+import { Form, Input, Button, Card, Alert } from "antd";
 import {
-  ExclamationCircleOutlined,
-  LockOutlined,
   UserOutlined,
+  LockOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { Alert, Button, Card, Form, Input, message } from "antd";
+import axios from "axios";
 import { useDispatch } from "react-redux";
+import { login } from "../Store/slice/userSlice";
 import { useNavigate } from "react-router-dom";
-import { login } from "../Store/slice/adminSlice";
-import useApiRequest from "../utils/useApiRequest";
 
-const AdminLogin = () => {
-  const { loading, error, makeRequest } = useApiRequest();
+const UserLogin = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
+  // API call for login
   const loginApi = async (values) => {
     try {
-      const response = await makeRequest({
-        method: "POST",
-        url: `${process.env.REACT_APP_API_URL}/admin/login`,
-        data: {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/login`,
+        {
           userName: values.username,
           password: values.password,
-        },
-      });
+        }
+      );
 
-      if (!response.success) {
-        throw new Error(response.message || "Login failed");
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Login failed");
       }
 
-      const { data } = response;
-
-      dispatch(login(data));
-      form.resetFields();
-      navigate("/admin/dashboard");
-      return response;
+      const data = response.data;
+      dispatch(login(data.data));
+      return data;
     } catch (error) {
-      console.error("error::: ", error);
-      throw error;
+      throw error.response ? error.response.data.message : "Login failed";
     }
   };
 
   const onFinish = async (values) => {
+    setLoading(true);
+    setError("");
+
     try {
-      const result = await loginApi(values);
-      message.success(result.message);
+      await loginApi(values);
+      form.resetFields();
+      navigate("/user");
     } catch (err) {
-      console.error("err::: ", err);
+      setError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,12 +66,23 @@ const AdminLogin = () => {
       }}
     >
       <Card
-        title="Admin Login"
+        title="User Login"
         style={{
           width: 400,
           boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         }}
       >
+        {error && (
+          <Alert
+            message="Login Error"
+            description={error}
+            type="error"
+            showIcon
+            icon={<ExclamationCircleOutlined />}
+            style={{ marginBottom: 16 }}
+          />
+        )}
+
         <Form
           name="login"
           initialValues={{ remember: true }}
@@ -99,8 +114,9 @@ const AdminLogin = () => {
               },
             ]}
           >
-            <Input.Password
+            <Input
               prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
               placeholder="Password"
               autoComplete="current-password"
             />
@@ -122,4 +138,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default UserLogin;

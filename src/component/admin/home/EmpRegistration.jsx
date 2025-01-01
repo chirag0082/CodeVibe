@@ -1,32 +1,49 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import {
-  Form,
-  Input,
-  Select,
-  Button,
-  Upload,
-  message,
-  Row,
-  Col,
-  Card,
-  Modal,
-} from "antd";
-import {
-  UploadOutlined,
+  CloseOutlined,
   CopyOutlined,
   SaveOutlined,
-  CloseOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
-import styles from "../../../css/admin/EmployeeRegistration.module.css";
-import uploadImageToFirebase from "../../../utils/uploadImageToFirebase";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+  Upload,
+} from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from "react-redux";
+import styles from "../../../css/admin/EmployeeRegistration.module.css";
+import scrollTop from "../../../utils/scrollTop";
+import uploadImageToFirebase from "../../../utils/uploadImageToFirebase";
+import useApiRequest from "../../../utils/useApiRequest";
 
-const EmployeeRegistration = ({ empData, setSide }) => {
+const EmployeeRegistration = ({
+  empData,
+  setSide,
+  setSelectedEmployee,
+  onUpdateComplete,
+}) => {
   const user = useSelector((store) => store.adminSlice);
+  const { error, makeRequest } = useApiRequest();
 
+  const isNotEmptyOrWhitespace = (field) => {
+    return (_, value) => {
+      if (!value || !value.trim()) {
+        return Promise.reject(
+          new Error(`${field} cannot be empty or just spaces`)
+        );
+      }
+      return Promise.resolve();
+    };
+  };
   const [form] = Form.useForm();
   const [formData, setFormData] = useState({
     emp_id: "",
@@ -43,7 +60,7 @@ const EmployeeRegistration = ({ empData, setSide }) => {
     emailAdd: "",
     joinDate: null,
     resignDate: null,
-    paidLeave: "",
+    paidLeave: 0,
     panNo: "",
     aadharNo: "",
     userName: "",
@@ -55,10 +72,12 @@ const EmployeeRegistration = ({ empData, setSide }) => {
     empPhoto: null,
   });
 
-  const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [birthDate, setBirthDate] = useState(null);
   const [joinDate, setJoinDate] = useState(null);
+  const [resignDate, setResignDate] = useState(null);
+  const [isResigned, setIsResigned] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
   const aadharPattern = /^[2-9]{1}[0-9]{11}$/;
@@ -92,20 +111,27 @@ const EmployeeRegistration = ({ empData, setSide }) => {
       setBirthDate(empData.birth_date ? new Date(empData.birth_date) : null);
       setJoinDate(empData.join_date ? new Date(empData.join_date) : null);
 
+      // Check and set resign date
+      if (empData.resign_date) {
+        setResignDate(new Date(empData.resign_date));
+        setIsResigned(true);
+      }
+
       form.setFieldsValue({
         ...mappedObj,
         birthDate: empData.birth_date ? new Date(empData.birth_date) : null,
         joinDate: empData.join_date ? new Date(empData.join_date) : null,
+        resignDate: empData.resign_date ? new Date(empData.resign_date) : null,
       });
     }
   }, [empData, form]);
 
-  const handleFileChange = (name, file) => {
+  const handleFileChange = useCallback((name, file) => {
     setFormData((prevState) => ({
       ...prevState,
       [name]: file instanceof File ? file : file.originFileObj,
     }));
-  };
+  }, []);
 
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -146,6 +172,7 @@ const EmployeeRegistration = ({ empData, setSide }) => {
         empId: empData?.emp_id,
         birthDate: birthDate,
         joinDate: joinDate,
+        resignDate: isResigned ? resignDate : null,
         empPhoto: empPhotoUrl,
         panPhoto: panPhotoUrl,
         aadharFront: aadharFrontUrl,
@@ -153,17 +180,16 @@ const EmployeeRegistration = ({ empData, setSide }) => {
         residentProof: residentProofUrl,
       };
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/admin/employ`,
-        submitData,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const response = await makeRequest({
+        method: "POST",
+        url: `${process.env.REACT_APP_API_URL}/admin/employ`,
+        data: submitData,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
-      message.success(response.data.message);
+      message.success(response.message);
       form.resetFields();
 
       setFormData({
@@ -181,7 +207,7 @@ const EmployeeRegistration = ({ empData, setSide }) => {
         emailAdd: "",
         joinDate: null,
         resignDate: null,
-        paidLeave: "",
+        paidLeave: 0,
         panNo: "",
         aadharNo: "",
         userName: "",
@@ -194,8 +220,11 @@ const EmployeeRegistration = ({ empData, setSide }) => {
       });
 
       // Reset date states
+      setSelectedEmployee(null);
       setBirthDate(null);
       setJoinDate(null);
+      setResignDate(null);
+      setIsResigned(false);
 
       setIsEditMode(false);
       setSide("1");
@@ -254,7 +283,7 @@ const EmployeeRegistration = ({ empData, setSide }) => {
             emailAdd: "",
             joinDate: null,
             resignDate: null,
-            paidLeave: "",
+            paidLeave: 0,
             panNo: "",
             aadharNo: "",
             userName: "",
@@ -265,10 +294,11 @@ const EmployeeRegistration = ({ empData, setSide }) => {
             residentProof: null,
             empPhoto: null,
           });
-          window.location.reload();
+          onUpdateComplete();
           setBirthDate(null);
           setJoinDate(null);
           setIsEditMode(false);
+          scrollTop();
           setSide("1");
         },
       });
@@ -277,9 +307,15 @@ const EmployeeRegistration = ({ empData, setSide }) => {
       setFormData({});
       setBirthDate(null);
       setJoinDate(null);
-      window.location.reload();
+      onUpdateComplete();
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      message.error(error);
+    }
+  }, [error]);
 
   return (
     <div className={styles.registrationContainer}>
@@ -293,6 +329,7 @@ const EmployeeRegistration = ({ empData, setSide }) => {
           onFinish={handleSubmit}
           layout="vertical"
           className={styles.registrationForm}
+          disabled={loading}
         >
           <Row gutter={16}>
             <Col xs={24} sm={12}>
@@ -301,6 +338,9 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                 name="empCode"
                 rules={[
                   { required: true, message: "Employee code is required" },
+                  {
+                    validator: isNotEmptyOrWhitespace("Employee code"),
+                  },
                 ]}
               >
                 <Input placeholder="Enter Employee Code" />
@@ -312,6 +352,9 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                 name="empName"
                 rules={[
                   { required: true, message: "Employee name is required" },
+                  {
+                    validator: isNotEmptyOrWhitespace("Employee name"),
+                  },
                 ]}
               >
                 <Input placeholder="Enter Full Name" />
@@ -338,7 +381,7 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                     showYearDropdown
                     dropdownMode="select"
                     placeholderText="Select Birth Date"
-                    dateFormat="dd/MM/yyyy"
+                    dateFormat="MMM-dd-yyyy"
                     className="form-control"
                     maxDate={new Date()}
                   />
@@ -378,12 +421,73 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                     showYearDropdown
                     dropdownMode="select"
                     placeholderText="Select Join Date"
-                    dateFormat="dd/MM/yyyy"
+                    dateFormat="MMM-dd-yyyy"
                     className="form-control"
                   />
                 </div>
               </Form.Item>
             </Col>
+          </Row>
+
+          <Row gutter={16}>
+            {isEditMode && (
+              <Col span={12}>
+                <Form.Item>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <input
+                      type="checkbox"
+                      id="isResigned"
+                      checked={isResigned}
+                      onChange={(e) => setIsResigned(e.target.checked)}
+                      style={{ marginRight: "10px" }}
+                    />
+                    <label htmlFor="isResigned">Employee Resigned?</label>
+                  </div>
+                </Form.Item>
+              </Col>
+            )}
+            {isResigned && (
+              <Col span={12}>
+                <Form.Item
+                  label="Resign Date"
+                  name="resignDate"
+                  rules={[
+                    {
+                      required: isResigned,
+                      message: "Resign date is required when resigned",
+                    },
+                    {
+                      validator: (_, value) => {
+                        if (value && joinDate && value < joinDate) {
+                          return Promise.reject(
+                            new Error("Resign date must be after join date")
+                          );
+                        }
+                        return Promise.resolve();
+                      },
+                    },
+                  ]}
+                >
+                  <div className="custom-datepicker-wrapper">
+                    <DatePicker
+                      selected={resignDate}
+                      onChange={(date) => {
+                        setResignDate(date);
+                        form.setFieldsValue({ resignDate: date });
+                      }}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      placeholderText="Select Resign Date"
+                      dateFormat="MMM-dd-yyyy"
+                      className="form-control"
+                      minDate={joinDate || undefined}
+                    />
+                  </div>
+                </Form.Item>
+              </Col>
+            )}
           </Row>
 
           <Row gutter={16}>
@@ -393,10 +497,6 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                 name="mobileNo"
                 rules={[
                   { required: true, message: "Mobile number is required" },
-                  {
-                    pattern: /^[0-9]{10}$/,
-                    message: "Please enter a valid mobile number",
-                  },
                 ]}
               >
                 <Input />
@@ -432,6 +532,9 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                 rules={[
                   { required: true, message: "PAN Number is required" },
                   { pattern: panPattern, message: "Invalid PAN number format" },
+                  {
+                    validator: isNotEmptyOrWhitespace("PAN number"),
+                  },
                 ]}
               >
                 <Input />
@@ -450,6 +553,9 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                     pattern: aadharPattern,
                     message: "Invalid Aadhar number format",
                   },
+                  {
+                    validator: isNotEmptyOrWhitespace("Adhar Number"),
+                  },
                 ]}
               >
                 <Input />
@@ -459,9 +565,30 @@ const EmployeeRegistration = ({ empData, setSide }) => {
               <Form.Item
                 label="Paid Leave"
                 name="paidLeave"
-                rules={[{ required: true, message: "Paid Leave is required" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Paid Leave is required",
+                  },
+                  {
+                    validator: async (_, value) => {
+                      if (isEditMode && !value && value !== 0) {
+                        // In edit mode, if no value is provided, use the existing value
+                        const existingValue = form.getFieldValue("paidLeave");
+                        if (existingValue >= 1) return Promise.resolve();
+                      }
+
+                      if (value < 1) {
+                        return Promise.reject(
+                          "Paid Leave should be at least 1 days"
+                        );
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
               >
-                <Input />
+                <Input type="number" min="1" />
               </Form.Item>
             </Col>
           </Row>
@@ -471,8 +598,22 @@ const EmployeeRegistration = ({ empData, setSide }) => {
               <Form.Item label="Emp Photo" name="empPhoto">
                 <Upload
                   name="empPhoto"
+                  fileList={
+                    formData.empPhoto
+                      ? [
+                          {
+                            uid: "-1",
+                            name: formData.empPhoto.name,
+                            status: "done",
+                            originFileObj: formData.empPhoto,
+                          },
+                        ]
+                      : []
+                  }
                   beforeUpload={() => false}
-                  onChange={({ file }) => handleFileChange("empPhoto", file)}
+                  onChange={({ file, fileList }) =>
+                    handleFileChange("empPhoto", file)
+                  }
                   accept="image/*"
                   maxCount={1}
                 >
@@ -541,12 +682,28 @@ const EmployeeRegistration = ({ empData, setSide }) => {
 
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="Education" name="education">
+              <Form.Item
+                label="Education"
+                name="education"
+                rules={[
+                  {
+                    validator: isNotEmptyOrWhitespace("Education"),
+                  },
+                ]}
+              >
                 <Input />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Experience" name="experience">
+              <Form.Item
+                label="Experience"
+                name="experience"
+                rules={[
+                  {
+                    validator: isNotEmptyOrWhitespace("Experience"),
+                  },
+                ]}
+              >
                 <Input />
               </Form.Item>
             </Col>
@@ -560,6 +717,9 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                 name="presentAdd"
                 rules={[
                   { required: true, message: "Present address is required" },
+                  {
+                    validator: isNotEmptyOrWhitespace("Present Address"),
+                  },
                 ]}
               >
                 <Input.TextArea rows={4} placeholder="Enter Present Address" />
@@ -587,6 +747,9 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                 name="permanentAdd"
                 rules={[
                   { required: true, message: "Permanent address is required" },
+                  {
+                    validator: isNotEmptyOrWhitespace("Permanent address"),
+                  },
                 ]}
               >
                 <Input.TextArea
@@ -597,36 +760,52 @@ const EmployeeRegistration = ({ empData, setSide }) => {
             </Col>
           </Row>
 
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item
-                label="Username"
-                name="userName"
-                rules={[
-                  {
-                    required: empData ? false : true,
-                    message: "Username is required",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label="Password"
-                name="userPassword"
-                rules={[
-                  {
-                    required: empData ? false : true,
-                    message: "Password is required",
-                  },
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
-            </Col>
-          </Row>
+          {!isEditMode && (
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Username"
+                  name="userName"
+                  rules={[
+                    {
+                      required: empData ? false : true,
+                      message: "Username is required",
+                    },
+                    {
+                      validator: isNotEmptyOrWhitespace("User Name"),
+                    },
+                  ]}
+                >
+                  <Input autoComplete="true" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="Password"
+                  name="userPassword"
+                  rules={[
+                    {
+                      required: empData ? false : true,
+                      message: "Password is required",
+                    },
+                    {
+                      min: 6,
+                      message: "Password must be at least 6 characters long",
+                    },
+                    {
+                      pattern: /^[^\s]+$/,
+                      message: "Password cannot contain spaces",
+                    },
+                    {
+                      validator: isNotEmptyOrWhitespace("Password"),
+                    },
+                  ]}
+                >
+                  <Input.Password autoComplete="current-password" />
+                </Form.Item>
+              </Col>
+            </Row>
+          )}
 
           <Row gutter={16}>
             <Col span={12}>
@@ -636,7 +815,7 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                   htmlType="submit"
                   block
                   icon={<SaveOutlined />}
-                  className={styles.submitButton}
+                  className={[styles.submitButton, "customBtnStyle"]}
                   loading={loading}
                 >
                   {isEditMode ? "Update Employee" : "Register Employee"}
@@ -649,7 +828,7 @@ const EmployeeRegistration = ({ empData, setSide }) => {
                   type="default"
                   block
                   icon={<CloseOutlined />}
-                  className={styles.submitButton}
+                  className={[styles.submitButton, "customBtnStyle"]}
                   onClick={handleClear}
                   disabled={loading}
                 >
@@ -665,3 +844,4 @@ const EmployeeRegistration = ({ empData, setSide }) => {
 };
 
 export default EmployeeRegistration;
+

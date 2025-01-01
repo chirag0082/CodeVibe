@@ -4,10 +4,14 @@ import { X, Menu } from "lucide-react";
 import styles from "../css/HeaderMenu.module.css";
 import logo from "../Images/logo.png";
 import scrollTop from "../utils/scrollTop";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../Store/slice/userSlice";
 
 const HeaderMenu = ({ showMenu, setShowMenu }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useSelector((store) => store.userSlice);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleResize = () => {
@@ -36,6 +40,10 @@ const HeaderMenu = ({ showMenu, setShowMenu }) => {
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
+  };
+
+  const logoutHandler = () => {
+    dispatch(logout());
   };
 
   return (
@@ -68,6 +76,11 @@ const HeaderMenu = ({ showMenu, setShowMenu }) => {
                 {item.label}
               </Link>
             ))}
+            {user.token && (
+              <button className={styles.logoutButton} onClick={logoutHandler}>
+                Logout
+              </button>
+            )}
           </nav>
 
           {showMenu && (
@@ -106,6 +119,14 @@ const HeaderMenu = ({ showMenu, setShowMenu }) => {
                       </span>
                     </Link>
                   ))}
+                  {user.token && (
+                    <button
+                      className={styles.drawerLogoutButton}
+                      onClick={logoutHandler}
+                    >
+                      Logout
+                    </button>
+                  )}
                 </nav>
               </div>
             </div>

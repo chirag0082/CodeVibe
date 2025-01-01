@@ -178,3 +178,39 @@
     display: none;
   }
 }
+
+.logoutButton {
+  background-color: #1677ff;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: #1677ff;
+  transform: scale(1.05);
+}
+
+.drawerLogoutButton {
+  background-color: #3588fd;
+  color: #ffffff;
+  border: none;
+  padding: 15px;
+  text-align: center;
+  width: 100%;
+  border-radius: 6px;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.drawerLogoutButton:hover {
+  background-color: #1677ff;
+  transform: scale(1.05);
+}

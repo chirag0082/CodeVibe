@@ -1,0 +1,80 @@
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f0f2f5;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.leaveBalance {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoIcon {
+  margin-left: 10px;
+  color: #1890ff;
+}
+
+.leaveTypeOption {
+  display: flex;
+  align-items: center;
+}
+
+.leaveTypeColor {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.leaveTypeDescription {
+  display: block;
+  font-size: 12px;
+}
+
+.leaveHistoryCard {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tableRow {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tableRow:hover {
+  background-color: #f6faff;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .leaveBalance {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .datePicker {
+    font-size: 14px;
+  }
+
+  .leaveTypeOption {
+    font-size: 14px;
+  }
+}
+
+.customDateRangePicker {
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+  padding: 4px;
+  width: 100%;
+}

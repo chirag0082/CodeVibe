@@ -1,0 +1,169 @@
+/* EmployeeRegistration.module.css */
+.pageWrapper {
+  min-height: 100vh;
+  background: linear-gradient(to right, #f0f2f5, #e6e9f0);
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.formCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.formTitle {
+  color: #1a3353;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+  position: relative;
+}
+
+.formTitle::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: #1890ff;
+  margin: 0.5rem auto;
+  border-radius: 2px;
+}
+
+.section {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e6e9f0;
+  transition: box-shadow 0.3s ease;
+}
+
+.section:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  color: #1a3353;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e6e9f0;
+}
+
+.sectionIcon {
+  margin-right: 0.75rem;
+  color: #1890ff;
+}
+
+.sectionContent {
+  margin-top: 1rem;
+}
+
+.datePicker {
+  width: 100% !important;
+  height: 32px;
+  padding: 4px 11px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.datePicker:hover {
+  border-color: #40a9ff;
+}
+
+.datePicker:focus {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.uploadBtn {
+  width: 100%;
+  height: 40px;
+  border: 1px dashed #d9d9d9;
+  background: #fafafa;
+}
+
+.uploadBtn:hover {
+  border-color: #40a9ff;
+  color: #40a9ff;
+}
+
+.copyButtonCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copyButton {
+  margin-top: 2rem;
+}
+
+.resignedCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  min-width: 120px;
+}
+
+.clearButton {
+  min-width: 120px;
+}
+
+@media (max-width: 768px) {
+  .pageWrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .formCard {
+    padding: 1.5rem 1rem;
+  }
+
+  .formTitle {
+    font-size: 1.5rem;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .submitButton,
+  .clearButton {
+    width: 100%;
+  }
+
+  .copyButtonCol {
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .section {
+    padding: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.1rem;
+  }
+}

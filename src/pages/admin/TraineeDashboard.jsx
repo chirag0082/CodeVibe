@@ -1,48 +1,37 @@
-import {
-  FileTextOutlined,
-  UserOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
+import { FileTextOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
-import EmpLiList from "../../component/admin/home/EmpList";
-// import EmployeeRegistration from "../../component/admin/home/EmpRegistration";
-import EmployeeRegistration from "../../component/admin/home/EmpRegistrationNew";
-import SalaryForm from "../../component/admin/home/SalaryForm";
+import TraineeList from "../../component/admin/trainee/TraineeList";
+import TraineeRegistration from "../../component/admin/trainee/TraineeRegistration";
 const { Sider, Content } = Layout;
 
-function AdminDashboard() {
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+function TraineeDashboard() {
+  const [selectedTrainee, setSelectedTrainee] = useState(null);
   const [selectedKey, setSelectedKey] = useState("1");
 
   const handleMenuClick = (key) => {
     setSelectedKey(key);
   };
 
-  const handleEditEmployee = (employee) => {
-    setSelectedEmployee(employee);
+  const handleEditTrainee = (trainee) => {
+    setSelectedTrainee(trainee);
     setSelectedKey("2");
   };
 
   const handleUpdateComplete = () => {
-    setSelectedEmployee(null);
+    setSelectedTrainee(null);
   };
 
   const menuItems = [
     {
       key: "1",
       icon: <UserOutlined />,
-      label: "Employee List",
+      label: "Trainee List",
     },
     {
       key: "2",
       icon: <FileTextOutlined />,
-      label: "Employee Registration",
-    },
-    {
-      key: "3",
-      icon: <TeamOutlined />,
-      label: "Salary Management",
+      label: "Trainee Registration",
     },
   ];
 
@@ -69,21 +58,20 @@ function AdminDashboard() {
           }}
         >
           {selectedKey === "1" && (
-            <EmpLiList onEditEmployee={handleEditEmployee} />
+            <TraineeList onEditTrainee={handleEditTrainee} />
           )}
           {selectedKey === "2" && (
-            <EmployeeRegistration
-              empData={selectedEmployee}
-              setSelectedEmployee={setSelectedEmployee}
+            <TraineeRegistration
+              traineeData={selectedTrainee}
+              setSelectedTrainee={setSelectedTrainee}
               onUpdateComplete={handleUpdateComplete}
               setSide={setSelectedKey}
             />
           )}
-          {selectedKey === "3" && <SalaryForm />}
         </Content>
       </Layout>
     </Layout>
   );
 }
 
-export default AdminDashboard;
+export default TraineeDashboard;

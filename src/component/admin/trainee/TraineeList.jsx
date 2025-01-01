@@ -11,13 +11,14 @@ import {
 } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from "react-redux";
 import useApiRequest from "../../../utils/useApiRequest";
-import EmployeeDetailModal from "./EmployeeDetailModal";
+import TraineeDetailModal from "./TraineeDetailModal";
 
 const { Text } = Typography;
 
-const EmpList = ({ onEditEmployee }) => {
+const TraineeList = ({ onEditTrainee }) => {
   const { loading, error, makeRequest } = useApiRequest();
 
   const user = useSelector((store) => store.adminSlice);
@@ -36,13 +37,13 @@ const EmpList = ({ onEditEmployee }) => {
     try {
       const response = await makeRequest({
         method: "GET",
-        url: `${process.env.REACT_APP_API_URL}/admin/employ`,
+        url: `${process.env.REACT_APP_API_URL}/admin/trainee`,
         headers: {
           Authorization: `Bearer ${user.token}`,
-        },
-        params: {
-          page: pagination.current,
-          limit: pagination.pageSize,
+          params: {
+            page: pagination.current,
+            limit: pagination.pageSize,
+          },
         },
       });
 
@@ -63,7 +64,7 @@ const EmpList = ({ onEditEmployee }) => {
   }, [fetchEmployees]);
 
   const handleTableChange = (newPagination) => {
-    setPagination(newPagination);
+    fetchEmployees(newPagination.current, newPagination.pageSize);
   };
 
   const handleResignEmployee = async () => {
@@ -72,13 +73,13 @@ const EmpList = ({ onEditEmployee }) => {
     try {
       await makeRequest({
         method: "POST",
-        url: `${process.env.REACT_APP_API_URL}/admin/employ/resign`,
+        url: `${process.env.REACT_APP_API_URL}/admin/trainee/complete`,
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
         data: {
-          empId: employeeToResign.emp_id,
-          resignDate: resignationDate.toISOString(),
+          traineeId: employeeToResign.trainee_id,
+          completeDate: resignationDate.toISOString(),
         },
       });
 
@@ -99,9 +100,9 @@ const EmpList = ({ onEditEmployee }) => {
 
   const columns = [
     {
-      title: "Employee",
-      dataIndex: "emp_name",
-      key: "emp_name",
+      title: "Trainee Name",
+      dataIndex: "trainee_name",
+      key: "trainee_name",
       render: (text, record) => (
         <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar
@@ -141,8 +142,8 @@ const EmpList = ({ onEditEmployee }) => {
       title: "Status",
       key: "status",
       render: (_, record) => (
-        <Tag color={record.resign_date ? "error" : "success"}>
-          {record.resign_date ? "Resigned" : "Active"}
+        <Tag color={record.complete_date ? "error" : "success"}>
+          {record.complete_date ? "Complete" : "Active"}
         </Tag>
       ),
     },
@@ -168,23 +169,23 @@ const EmpList = ({ onEditEmployee }) => {
           color="primary"
           variant="solid"
           className="customBtnStyle"
-          onClick={() => onEditEmployee(record)}
+          onClick={() => onEditTrainee(record)}
         >
           Edit Details
         </Button>
       ),
     },
     {
-      title: "Resign",
-      key: "resign",
+      title: "Complete",
+      key: "complete",
       render: (_, record) => (
         <Button
           className="customBtnStyle"
           danger
-          disabled={record.resign_date}
+          disabled={record.complete_date}
           onClick={() => showResignationModal(record)}
         >
-          Resign
+          Complete
         </Button>
       ),
     },
@@ -229,16 +230,15 @@ const EmpList = ({ onEditEmployee }) => {
           current: pagination.current,
           pageSize: pagination.pageSize,
           total: pagination.total,
-          pageSizeOptions: ["5", "10", "20", "50"],
           showSizeChanger: true,
-          showTotal: (total) => `Total ${total} leaves`,
+          showQuickJumper: true,
         }}
         onChange={handleTableChange}
-        rowKey="emp_id"
+        rowKey="trainee_id"
         scroll={{ x: "max-content" }}
       />
-      <EmployeeDetailModal
-        employee={selectedEmployee}
+      <TraineeDetailModal
+        trainee={selectedEmployee}
         visible={!!selectedEmployee}
         onClose={() => setSelectedEmployee(null)}
       />
@@ -267,4 +267,4 @@ const EmpList = ({ onEditEmployee }) => {
   );
 };
 
-export default EmpList;
+export default TraineeList;

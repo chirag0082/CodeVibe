@@ -1,17 +1,23 @@
 import {
-  AppstoreOutlined,
-  DashboardOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Menu as MenuIcon, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+  CheckCircle,
+  IndianRupee,
+  Menu as MenuIcon,
+  Scroll,
+  Users,
+  X,
+} from "lucide-react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "../../../css/admin/AdminHeader.module.css";
+import { logout } from "../../../Store/slice/adminSlice";
 
-const AdminHeader = () => {
-  const [showMenu, setShowMenu] = useState(false);
+const AdminHeader = ({ showMenu, setShowMenu }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useSelector((store) => store.adminSlice);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,7 +28,7 @@ const AdminHeader = () => {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [setShowMenu]);
 
   const handleNavigation = (path) => {
     setShowMenu(false);
@@ -31,22 +37,34 @@ const AdminHeader = () => {
 
   const menuItems = [
     {
-      label: "Dashboard",
+      label: "Employee",
       path: "/admin/dashboard",
-      icon: <DashboardOutlined />,
-      iconEmoji: "📊",
+      icon: <Users />,
+      iconEmoji: "👤",
+    },
+    {
+      label: "Trainee",
+      path: "/admin/trainee",
+      icon: <Users />,
+      iconEmoji: "👤",
     },
     {
       label: "Leave Approve",
       path: "/admin/leave-approve",
-      icon: <UserOutlined />,
-      iconEmoji: "👥",
+      icon: <CheckCircle />,
+      iconEmoji: "✔️",
     },
     {
       label: "Salary",
       path: "/admin/salary",
-      icon: <AppstoreOutlined />,
-      iconEmoji: "📈",
+      icon: <IndianRupee />,
+      iconEmoji: "💵",
+    },
+    {
+      label: "Company Ledger",
+      path: "/admin/ledger",
+      icon: <Scroll />,
+      iconEmoji: "📚",
     },
   ];
 
@@ -54,6 +72,9 @@ const AdminHeader = () => {
     setShowMenu(!showMenu);
   };
 
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
   return (
     <header className={styles.headerFullWidth}>
       <div className={styles.headerContainer}>
@@ -84,6 +105,11 @@ const AdminHeader = () => {
                 <span className={styles.navLinkText}>{item.label}</span>
               </Link>
             ))}
+            {user.token && (
+              <button className={styles.logoutButton} onClick={logoutHandler}>
+                Logout
+              </button>
+            )}
           </nav>
 
           {showMenu && (
@@ -119,6 +145,14 @@ const AdminHeader = () => {
                       </span>
                     </Link>
                   ))}
+                  {user.token && (
+                    <button
+                      className={styles.drawerLogoutButton}
+                      onClick={logoutHandler}
+                    >
+                      Logout
+                    </button>
+                  )}
                 </nav>
               </div>
             </div>

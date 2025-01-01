@@ -1,10 +1,11 @@
-.registrationContainer {
+/* .registrationContainer {
   background-color: #f0f2f5;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 24px;
+  max-width: "1200px";
 }
 
 .registrationCard {
@@ -22,9 +23,6 @@
 .submitButton {
   margin-top: 16px;
   height: 48px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 6px;
 }
 
 .centerCol {
@@ -33,10 +31,27 @@
   align-items: center;
 }
 
-/* .copyAddressButton {
-  width: 80%;
-} */
+.sectionTitle {
+  margin-top: "24px";
+  margin-bottom: "16px";
+  color: "#1890ff";
+  font-size: "18px";
+  font-weight: 500;
+}
+.formSection {
+  background-color: "#fafafa";
+  padding: "20px";
+  border-radius: "6px";
+  margin-bottom: "24px";
+}
 
+.uploadButton {
+  width: "100%";
+}
+
+ .copyAddressButton {
+  width: 80%;
+}
 @media (max-width: 576px) {
   .registrationContainer {
     padding: 12px;
@@ -44,5 +59,170 @@
 
   .registrationCard {
     max-width: 100%;
+  }
+} */
+
+/* EmployeeRegistration.module.css */
+.pageWrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f6f9fc 0%, #ecf0f5 100%);
+  padding: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.formCard {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  transition: transform 0.3s ease;
+}
+
+.formCard:hover {
+  transform: translateY(-5px);
+}
+
+.formTitle {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+}
+
+.section {
+  background: #f8fafc;
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e1e8ed;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.sectionIcon {
+  margin-right: 0.75rem;
+  color: #3498db;
+  font-size: 1.25rem;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.uploadSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.uploadButton {
+  width: 100%;
+  padding: 0.75rem;
+  background: #f0f7ff;
+  border: 2px dashed #3498db;
+  border-radius: 10px;
+  color: #3498db;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.uploadButton:hover {
+  background: #e1efff;
+  border-color: #2980b9;
+}
+
+.actionButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.button {
+  padding: 1rem;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submitButton {
+  background: #3498db;
+  color: white;
+  border: none;
+}
+
+.submitButton:hover {
+  background: #2980b9;
+}
+
+.clearButton {
+  background: white;
+  color: #e74c3c;
+  border: 2px solid #e74c3c;
+}
+
+.clearButton:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+.datePicker {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pageWrapper {
+    padding: 1rem;
+  }
+
+  .formCard {
+    padding: 1.5rem;
+  }
+
+  .formTitle {
+    font-size: 2rem;
+  }
+
+  .section {
+    padding: 1.5rem;
+  }
+
+  .actionButtons {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .formCard {
+    padding: 1rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .gridContainer {
+    grid-template-columns: 1fr;
   }
 }

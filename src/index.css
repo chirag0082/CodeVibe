@@ -11,3 +11,41 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.customBtnStyle {
+  height: 40px;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 30px;
+}
+
+.customDateSelectStyle {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #038eff;
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.customDateSelectStyle:hover {
+  border-color: #69b9fa;
+  box-shadow: 0 4px 8px rgba(64, 169, 255, 0.1);
+}
+
+.customDateSelectStyle:focus,
+.customDateSelectStyle-focused {
+  border-color: #005bb1;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  outline: none;
+}
+
+.customDateSelectStyle input {
+  font-size: 14px;
+  color: #262626;
+  font-weight: 500;
+}
+
+/* .bluid {
+  padding: 4rem 1rem;
+} */

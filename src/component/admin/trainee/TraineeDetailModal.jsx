@@ -25,7 +25,7 @@ import { File } from "lucide-react";
 import moment from "moment";
 import React from "react";
 
-const { Text, Title, Paragraph } = Typography;
+const { Text, Title } = Typography;
 
 const InformationCard = ({ title, icon, children, color = "blue" }) => (
   <Card
@@ -69,8 +69,8 @@ const InfoItem = ({ label, value, icon, customStyle }) => (
   </Row>
 );
 
-const EmployeeDetailModal = ({ employee, onClose, visible }) => {
-  if (!employee) return null;
+const TraineeDetailModal = ({ trainee, onClose, visible }) => {
+  if (!trainee) return null;
 
   const renderDocumentCard = (title, image, number) => {
     const isPDF = image && image.toLowerCase().includes(".pdf");
@@ -99,7 +99,7 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
               alignItems: "center",
               backgroundColor: "#f0f0f0",
               padding: "10px",
-              overflow: "hidden", // Prevent content from overflowing
+              overflow: "hidden",
             }}
           >
             {isPDF ? (
@@ -109,10 +109,10 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
                 alt={title}
                 src={image || fallbackImage}
                 style={{
-                  maxHeight: "100%", // Ensure image doesn't exceed container height
-                  maxWidth: "100%", // Ensure image doesn't exceed container width
-                  objectFit: "contain", // Maintain aspect ratio
-                  objectPosition: "center", // Center the image
+                  maxHeight: "100%",
+                  maxWidth: "100%",
+                  objectFit: "contain",
+                  objectPosition: "center",
                 }}
                 preview={false}
               />
@@ -127,7 +127,7 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
 
   return (
     <Modal
-      title={`Employee Details: ${employee.emp_name}`}
+      title={`Trainee Details: ${trainee.trainee_name}`}
       open={visible}
       onCancel={onClose}
       footer={null}
@@ -140,20 +140,17 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
           <Col>
             <Space>
               <Title level={4} style={{ margin: 0 }}>
-                {employee.emp_name}
+                {trainee.trainee_name}
               </Title>
-              <Tag color={employee.resign_date ? "error" : "success"}>
-                {employee.resign_date ? "Resigned" : "Active"}
+              <Tag color={trainee.complete_date ? "error" : "success"}>
+                {trainee.complete_date ? "Complete" : "Active"}
               </Tag>
             </Space>
-            <Paragraph type="secondary" style={{ margin: 0 }}>
-              Employee Code: {employee.emp_code}
-            </Paragraph>
           </Col>
           <Col>
-            {employee.emp_photo ? (
+            {trainee.trainee_photo ? (
               <Image
-                src={employee.emp_photo}
+                src={trainee.trainee_photo}
                 style={{
                   height: 70,
                   width: 70,
@@ -163,10 +160,10 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
               />
             ) : (
               <Avatar
-                icon={!employee.emp_photo ? <UserOutlined /> : null}
+                icon={!trainee.trainee_photo ? <UserOutlined /> : null}
                 style={{
                   marginRight: 10,
-                  backgroundColor: employee.resign_date ? "#ff4d4f" : "#52c41a",
+                  backgroundColor: trainee.resign_date ? "#ff4d4f" : "#52c41a",
                 }}
               />
             )}
@@ -185,29 +182,43 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
               >
                 <InfoItem
                   label="Gender"
-                  value={employee.gender}
+                  value={trainee.gender}
                   icon={<ManOutlined />}
                 />
                 <InfoItem
                   label="Birth Date"
-                  value={moment(employee.birth_date).format("ll")}
+                  value={moment(trainee.birth_date).format("ll")}
                   icon={<CalendarOutlined />}
                 />
                 <InfoItem
                   label="Email"
-                  value={employee.email_add}
+                  value={trainee.email_add}
                   icon={<MailOutlined />}
                 />
                 <InfoItem
                   label="Mobile"
-                  value={employee.mobile_no}
+                  value={trainee.mobile_no}
                   icon={<PhoneOutlined />}
                 />
                 <InfoItem
                   label="Alternate Mobile"
-                  value={employee.alternet_no || "N/A"}
+                  value={trainee.alternet_no || "N/A"}
                   icon={<PhoneOutlined />}
                 />
+                {trainee.ref_name && (
+                  <InfoItem
+                    label="Reference Name"
+                    value={trainee.ref_name || "N/A"}
+                    icon={<UserOutlined />}
+                  />
+                )}
+                {trainee.ref_no && (
+                  <InfoItem
+                    label="Reference Number"
+                    value={trainee.ref_no || "N/A"}
+                    icon={<PhoneOutlined />}
+                  />
+                )}
               </InformationCard>
             </Col>
 
@@ -219,31 +230,26 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
               >
                 <InfoItem
                   label="Education"
-                  value={employee.education}
+                  value={trainee.education}
                   icon={<IdcardOutlined />}
                 />
                 <InfoItem
                   label="Join Date"
-                  value={moment(employee.join_date).format("ll")}
+                  value={moment(trainee.join_date).format("ll")}
                   icon={<CalendarOutlined />}
                 />
-                {employee.resign_date && (
-                  <InfoItem
-                    label="Resign Date"
-                    value={moment(employee.resign_date).format("ll")}
-                    icon={<CalendarOutlined />}
-                  />
-                )}
                 <InfoItem
                   label="Experience"
-                  value={employee.experience}
+                  value={trainee.experience}
                   icon={<GlobalOutlined />}
                 />
-                <InfoItem
-                  label="Paid Leave"
-                  value={`${employee.paid_leave} days`}
-                  icon={<CalendarOutlined />}
-                />
+                {trainee.complete_date && (
+                  <InfoItem
+                    label="Complete Date"
+                    value={moment(trainee.complete_date).format("ll")}
+                    icon={<GlobalOutlined />}
+                  />
+                )}
               </InformationCard>
             </Col>
 
@@ -257,7 +263,7 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
                   <Col xs={24} md={12}>
                     <InfoItem
                       label="Present Address"
-                      value={employee.present_add}
+                      value={trainee.present_add}
                       icon={<HomeOutlined />}
                       customStyle={{
                         border: "1px solid #faad14",
@@ -269,7 +275,7 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
                   <Col xs={24} md={12}>
                     <InfoItem
                       label="Permanent Address"
-                      value={employee.permanent_add}
+                      value={trainee.permanent_add}
                       icon={<HomeOutlined />}
                       customStyle={{
                         border: "1px solid #faad14",
@@ -288,24 +294,17 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
           <Card title="Documents" style={{ height: "100%" }}>
             <Row gutter={[16, 16]}>
               <Col xs={12} sm={12} md={12}>
-                {renderDocumentCard(
-                  "PAN Card",
-                  employee.pan_photo,
-                  `PAN No: ${employee.pan_no}`
-                )}
-              </Col>
-              <Col xs={12} sm={12} md={12}>
-                {renderDocumentCard("Resident Proof", employee.resident_proof)}
+                {renderDocumentCard("Resident Proof", trainee.resident_proof)}
               </Col>
               <Col xs={12} sm={12} md={12}>
                 {renderDocumentCard(
                   "Aadhar Front",
-                  employee.aadhar_front,
-                  `Aadhar No: ${employee.aadhar_no}`
+                  trainee.aadhar_front,
+                  `Aadhar No: ${trainee.aadhar_no}`
                 )}
               </Col>
               <Col xs={12} sm={12} md={12}>
-                {renderDocumentCard("Aadhar Back", employee.aadhar_back)}
+                {renderDocumentCard("Aadhar Back", trainee.aadhar_back)}
               </Col>
             </Row>
           </Card>
@@ -315,4 +314,4 @@ const EmployeeDetailModal = ({ employee, onClose, visible }) => {
   );
 };
 
-export default EmployeeDetailModal;
+export default TraineeDetailModal;

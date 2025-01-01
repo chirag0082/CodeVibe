@@ -1,0 +1,143 @@
+.container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.formCard {
+  margin-bottom: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03),
+    0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+}
+
+.tableCard {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03),
+    0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #1f1f1f;
+}
+
+.form {
+  width: 100%;
+}
+
+.formItem {
+  margin-bottom: 16px;
+}
+
+.formItem :global(.ant-form-item-label) {
+  padding-bottom: 4px;
+}
+
+.formItem :global(.ant-form-item-label > label) {
+  color: #1f1f1f;
+  font-weight: 500;
+}
+
+.select,
+.inputNumber,
+.datePicker {
+  width: 100%;
+}
+
+/* Style for react-datepicker wrapper */
+.formItem :global(.react-datepicker-wrapper) {
+  width: 100%;
+}
+
+/* Style for react-datepicker input */
+.formItem :global(.react-datepicker__input-container input) {
+  width: 100%;
+  padding: 4px 11px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.formItem :global(.react-datepicker__input-container input:hover) {
+  border-color: #4096ff;
+}
+
+.formItem :global(.react-datepicker__input-container input:focus) {
+  border-color: #4096ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  outline: none;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.remarksItem {
+  grid-column: 1 / -1;
+}
+
+.buttonGroup {
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+.buttonGroup :global(.ant-space) {
+  gap: 12px;
+}
+
+.table {
+  margin-top: 16px;
+}
+
+/* Responsive styles */
+@media (max-width: 576px) {
+  .container {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .formCard,
+  .tableCard {
+    border-radius: 8px;
+  }
+
+  .buttonGroup {
+    margin-top: 16px;
+  }
+}
+
+/* Table responsive styles */
+.table :global(.ant-table) {
+  overflow-x: auto;
+}
+
+/* Custom scrollbar for table */
+.table :global(.ant-table-body)::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table :global(.ant-table-body)::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.table :global(.ant-table-body)::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 4px;
+}
+
+.table :global(.ant-table-body)::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
+}
+
+/* Optional: Add hover effect to table rows */
+.table :global(.ant-table-tbody > tr:hover > td) {
+  background-color: #fafafa !important;
+}

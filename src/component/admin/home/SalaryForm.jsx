@@ -1,55 +1,47 @@
-import React, { useState, useEffect } from "react";
 import {
+  Button,
+  Card,
+  Col,
   Form,
   Input,
-  Select,
-  Card,
-  Table,
   message,
+  Popconfirm,
   Row,
-  Col,
-  Button,
+  Select,
+  Table,
 } from "antd";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
-import moment from "moment";
 import { useSelector } from "react-redux";
+import useApiRequest from "../../../utils/useApiRequest";
+import formatINR from "../../../utils/formatINR";
 
 const SalaryForm = () => {
-  const [form] = Form.useForm();
+  const { loading, makeRequest } = useApiRequest();
   const user = useSelector((store) => store.adminSlice);
 
+  const [form] = Form.useForm();
   const [employees, setEmployees] = useState([]);
   const [salaryRecords, setSalaryRecords] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [effectiveDate, setEffectiveDate] = useState(null);
+  const [originalEffectiveDate, setOriginalEffectiveDate] = useState(null);
 
   const fetchEmployees = async (searchTerm = "") => {
     try {
-      setLoading(true);
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/employ`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-          params: {
-            page: 1,
-            limit: 100,
-            search: searchTerm,
-          },
-        }
-      );
+      const response = await makeRequest({
+        method: "GET",
+        url: `${process.env.REACT_APP_API_URL}/admin/employ/only`,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
-      setEmployees(
-        Array.isArray(response.data.data.data) ? response.data.data.data : []
-      );
-      setLoading(false);
+      setEmployees(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
-      setLoading(false);
       setEmployees([]);
       message.error("Failed to fetch employees");
     }
@@ -57,19 +49,16 @@ const SalaryForm = () => {
 
   const fetchSalaryRecords = async (empId) => {
     try {
-      setLoading(true);
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/employ/salary/user/${empId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
-      setSalaryRecords(response.data.data.data);
-      setLoading(false);
+      const response = await makeRequest({
+        method: "GET",
+        url: `${process.env.REACT_APP_API_URL}/admin/employ/salary/user/${empId}`,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
+      setSalaryRecords(response.data.data);
     } catch (error) {
-      setLoading(false);
       message.error("Failed to fetch salary records");
     }
   };
@@ -92,51 +81,61 @@ const SalaryForm = () => {
 
   const handleSubmit = async () => {
     try {
-      setLoading(true);
-
       const values = await form.validateFields();
 
       const payload = {
         empId: values.empId,
         salary: parseFloat(values.salary),
-        effectiveDate: moment(effectiveDate)
+        effectiveDate: moment(effectiveDate || originalEffectiveDate)
           .startOf("month")
           .format("YYYY-MM-DD"),
 
         ...(isEditing && { salaryId: values.salaryId }),
       };
-      console.log("payload::: ", payload);
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/admin/employ/salary`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      message.success(
-        isEditing
-          ? "Salary record updated successfully"
-          : "Salary record created successfully"
-      );
+      const response = await makeRequest({
+        method: "POST",
+        url: `${process.env.REACT_APP_API_URL}/admin/employ/salary`,
+        data: payload,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (selectedEmployee) {
         fetchSalaryRecords(selectedEmployee.emp_id);
       }
 
+      message.success(response.message);
       form.resetFields();
       setEffectiveDate(null);
+      setOriginalEffectiveDate(null);
       setIsEditing(false);
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       message.error(
         error.response?.data?.message || "Failed to save salary record"
       );
+    }
+  };
+
+  const handleDeleteRecord = async (id) => {
+    try {
+      const response = await makeRequest({
+        method: "DELETE",
+        url: `${process.env.REACT_APP_API_URL}/admin/employ/salary/${id}`,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      message.success(response.message ?? "Salary record deleted successfully");
+      fetchSalaryRecords(selectedEmployee.emp_id);
+      form.resetFields();
+      setEffectiveDate(null);
+      setOriginalEffectiveDate(null);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("error::: ", error);
     }
   };
 
@@ -152,33 +151,46 @@ const SalaryForm = () => {
     });
 
     setEffectiveDate(effectiveDate);
+    setOriginalEffectiveDate(effectiveDate);
   };
 
   const columns = [
-    // {
-    //   title: "Salary ID",
-    //   dataIndex: "salary_id",
-    //   key: "salary_id",
-    // },
     {
       title: "Salary",
       dataIndex: "salary",
       key: "salary",
-      render: (text) => `₹${parseFloat(text).toFixed(2)}`,
+      render: (text) => formatINR(text),
     },
     {
       title: "Effective Date",
       dataIndex: "effective_date",
       key: "effective_date",
-      render: (text) => moment(text).format("YYYY-MM"),
+      render: (text) => moment(text).format("YYYY-MMM"),
     },
     {
       title: "Actions",
       key: "actions",
       render: (text, record) => (
-        <Button type="link" onClick={() => handleEditRecord(record)}>
-          Edit
-        </Button>
+        <div style={{ display: "flex", gap: 5 }}>
+          <Button
+            onClick={() => handleEditRecord(record)}
+            className="customBtnStyle"
+            color="primary"
+            variant="outlined"
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            title="Are you sure you want to delete this record?"
+            onConfirm={() => handleDeleteRecord(record.salary_id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button color="danger" variant="solid" className="customBtnStyle">
+              Delete
+            </Button>
+          </Popconfirm>
+        </div>
       ),
     },
   ];
@@ -251,8 +263,17 @@ const SalaryForm = () => {
               label="Effective Date"
               rules={[
                 {
-                  required: true,
-                  message: "Please select effective date",
+                  validator: (_, value) => {
+                    // Allow submission if already editing and no new date is selected
+                    if (isEditing && (effectiveDate || originalEffectiveDate)) {
+                      return Promise.resolve();
+                    }
+
+                    // Otherwise, require a date
+                    return value || effectiveDate || originalEffectiveDate
+                      ? Promise.resolve()
+                      : Promise.reject("Please select effective date");
+                  },
                 },
               ]}
             >
@@ -267,7 +288,7 @@ const SalaryForm = () => {
                         : "",
                     });
                   }}
-                  dateFormat="yyyy MMM"
+                  dateFormat="yyyy-MMM"
                   showMonthYearPicker
                   placeholderText="Select Month and Year"
                   customInput={
@@ -276,6 +297,8 @@ const SalaryForm = () => {
                       value={
                         effectiveDate
                           ? moment(effectiveDate).format("YYYY-MM")
+                          : isEditing && originalEffectiveDate
+                          ? moment(originalEffectiveDate).format("YYYY-MM")
                           : ""
                       }
                     />
@@ -285,7 +308,12 @@ const SalaryForm = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit" loading={loading}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                className="customBtnStyle"
+              >
                 {isEditing ? "Update Salary" : "Create Salary"}
               </Button>
               {isEditing && (
@@ -294,8 +322,10 @@ const SalaryForm = () => {
                     form.resetFields();
                     setIsEditing(false);
                     setEffectiveDate(null);
+                    setOriginalEffectiveDate(null);
                   }}
                   style={{ marginLeft: 8 }}
+                  className="customBtnStyle"
                 >
                   Cancel
                 </Button>
@@ -321,6 +351,7 @@ const SalaryForm = () => {
                 locale={{
                   emptyText: "No salary records found",
                 }}
+                scroll={{ x: "max-content" }}
               />
             </Card>
           )}
